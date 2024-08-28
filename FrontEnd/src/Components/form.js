@@ -1,42 +1,46 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import axios from "axios";
 import { usePage, useUser } from "../pageContext";
+import { useState } from "react";
 
 const Form = () => {
-    
-  const [Username, setUsername] = useState("");
-  const [Password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    NombreUsuario: "",
+    Correo: "",
+    Pass: "",
+  });
+  
   const { setUser: setContextUser } = useUser();
   const { setPage: setContextPage } = usePage();
 
-const enviar = async (e) => {
-  e.preventDefault();
+  const enviar = async (e) => {
+    e.preventDefault();
 
-  try {
-    // Solicitud GET para obtener los datos del usuario
-    const response = await axios.get(
-      `http://localhost:4000/Users?NombreUsuario=${Username}`
-    );
+    try {
+      // Solicitud GET para obtener los datos del usuario
+      const NombreUsuario = await axios.get(
+        `http://localhost:5000/Users?NombreUsuario=${user.NombreUsuario}`
+      );
 
-    if (response.data.length > 0) {
-      const usuario = response.data[0];
+      const Password = await axios.get(
+        `http://localhost:5000/Users?Pass=${user.Pass}`
+      );
 
-      if (usuario.Pass === Password) {
-        alert("Éxito al iniciar sesión");
-        setContextUser(usuario); // Actualizar el contexto con el usuario
-        setContextPage("Gate")
-      } else {
+      if (NombreUsuario.data.length === 0) {
+        alert("Usuario no encontrado");
+      } else if (Password.data.length === 0) {
         alert("Contraseña incorrecta");
+      } else {
+        alert("Inicio de sesión exitoso");
+        setContextUser(user);
+        setContextPage("Gate")
       }
-    } else {
-      alert("Usuario no encontrado");
+    } catch (error) {
+      console.error(error);
+      alert("Ocurrió un error al intentar iniciar sesión");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Ocurrió un error al intentar iniciar sesión");
-  }
-};
+  };
+
   return (
     <>
       {/* Barra de navegación */}
@@ -71,8 +75,11 @@ const enviar = async (e) => {
           </div>
         </div>
       </nav>
-      <div className="d-flex justify-content-center align-items-center m-5 p-5">
-        <form onSubmit={enviar} className="my-5 py-5 px-4 bg-dark rounded-4">
+      <div className="d-flex justify-content-center align-items-center m-1 p-5">
+        <form
+          onSubmit={enviar}
+          className="my-1 py-5 px-4 bg-dark rounded-4 w-25"
+        >
           <div className="d-flex justify-content-center">
             <span className="text-warning fs-4 fw-bold">Log in</span>
           </div>
@@ -89,12 +96,14 @@ const enviar = async (e) => {
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               required
-              value={Username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={user.NombreUsuario}
+              onChange={(e) =>
+                setUser((prevUsuario) => ({
+                  ...prevUsuario,
+                  NombreUsuario: e.target.value,
+                }))
+              }
             />
-            <div id="emailHelp" className="form-text text-warning">
-              Ayudanos ingresando un nombre valido
-            </div>
           </div>
           <div className="my-3">
             <label
@@ -108,13 +117,31 @@ const enviar = async (e) => {
               className="form-control"
               id="exampleInputPassword1"
               required
-              value={Password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={user.Pass}
+              onChange={(e) =>
+                setUser((prevUsuario) => ({
+                  ...prevUsuario,
+                  Pass: e.target.value,
+                }))
+              }
             />
           </div>
-          <button type="submit" className="btn btn-warning">
-            Submit
-          </button>
+          <div className="d-flex justify-content-center">
+              <button type="submit" className="btn btn-warning w-100 mt-3">
+                Continuar
+              </button>
+            </div>
+          <div
+            id="emailHelp"
+            className="form-text text-warning mt-3 text-start"
+          >
+            <Link
+              onClick={() => setContextPage("Register")}
+              className="form-text text-warning mt-3 text-decoration-none fs-6 fw-bold"
+            >
+              ¿ No tiene cuenta ? Cree una aquí
+            </Link>
+          </div>
         </form>
       </div>
       {/*footer*/}

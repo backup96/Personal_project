@@ -17,19 +17,21 @@ const Gate = () => {
     CantLicenciasVendidas: "",
     Imagen: "",
   });
+
   const [car, setCarrito] = useState({
+    id: "",
     Nombre: "",
+    Imagen: "",
     Categoria: "",
     Precio: "",
-    Pe: 0,
-    Cantidad: 0,
-    idDueño: 0,
+    Cantidad: "",
   });
+
   useEffect((dataCarrito) => {
     async function fetchJuegos() {
       try {
         const response = await axios.get(
-          `http://localhost:4000/Juegos?_sort=CLV&_order=asc`
+          `http://localhost:5000/Juegos?_sort=CLV&_order=asc`
         );
         setData(response.data);
       } catch (error) {
@@ -38,6 +40,7 @@ const Gate = () => {
     }
     fetchJuegos();
   }, []);
+
   const logOut = () => {
     setContextUser(null);
     setContextPage("Form");
@@ -46,35 +49,27 @@ const Gate = () => {
 
   const carrito = async (e) => {
     e.preventDefault();
-
-    if (!user) {
-      alert("Para ir al carrito, inicie sesion primero");
-      setContextPage("Form");
-    } else {
-      try {
-        const verResponse = await axios.get(`http://localhost:4000/Carrito/`);
-        const val = verResponse.data.filter(
-          (juego) =>
-            juego.Nombre === car.Nombre && juego.idDueño === user.idUser
-        );
-        if (val.length > 0) {
-          alert("Este juego ya esta en tu carrito");
-        } else {
-          const response = await axios.post(
-            `http://localhost:4000/Carrito`,
-            car
-          );
-          if (response.status === 201) {
-            alert("Juego agregado correctamente");
-          }
+    try {
+      const verResponse = await axios.get(`http://localhost:5000/Carrito/`);
+      const val = verResponse.data.filter(
+        (juego) => juego.Nombre === car.Nombre && juego.idDueño === user.idUser
+      );
+      if (val.length > 0) {
+        alert("Este juego ya esta en tu carrito");
+      } else {
+        const response = await axios.post(`http://localhost:5000/Carrito`, car);
+        if (response.status === 201) {
+          alert("Juego agregado correctamente");
         }
-      } catch (error) {
-        console.error(error);
-        alert("Ocurrió un error al intentar agregar el juego al carrito");
       }
+    } catch (error) {
+      console.error(error);
+      alert("Ocurrió un error al intentar agregar el juego al carrito");
     }
   };
+
   const mostWanted = data.slice(data.length - 5, data.length);
+
   return (
     <>
       {/* Barra de navegación */}
@@ -138,6 +133,7 @@ const Gate = () => {
                 </form>
               </li>
               {!user ? (
+                <>
                 <li className="nav-item mx-2">
                   <button
                     onClick={() => setContextPage("Form")}
@@ -147,17 +143,18 @@ const Gate = () => {
                     Iniciar Sesion
                   </button>
                 </li>
+                <li className="nav-item">
+                <button
+                  onClick={() => setContextPage("Carrito")}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  Carrito
+                </button>
+              </li>
+                </>
               ) : (
                 <>
-                  <li className="nav-item">
-                    <button
-                      onClick={() => setContextPage("Carrito")}
-                      type="button"
-                      className="btn btn-primary ms-3"
-                    >
-                      Carrito
-                    </button>
-                  </li>
                   <li className="nav-item dropdown mx-3">
                     <Link
                       className="btn btn-warning"
@@ -490,11 +487,10 @@ const Gate = () => {
                     setCarrito((prevCarrito) => ({
                       ...prevCarrito,
                       Nombre: dataE.Nombre,
+                      Imagen: dataE.Imagen,
                       Categoria: dataE.Categoria,
                       Precio: dataE.Precio,
-                      Pe: dataE.Pe,
-                      Cantidad: 1,
-                      idDueño: user.idUser,
+                      Cantidad: 0,
                     }))
                   }
                   type="submit"

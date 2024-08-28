@@ -36,7 +36,7 @@
       "CantLicenciasDisponibles": 1200,
       "CantLicenciasVendidas": "3.000.000",
       "CLV": 3000000,
-      "Imagen": "https://assets-prd.ignimgs.com/2021/12/10/left4dead2-1639126647529.jpg",
+      "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkadMgJo2PcLhECLlQZlehxo3dt5e3PrIIA&s",
       "id": "1f48"
     },
     {
@@ -101,7 +101,7 @@
       "CantLicenciasDisponibles": 1200,
       "CantLicenciasVendidas": "14.000.000",
       "CLV": 14000000,
-      "Imagen": "https://www.gamespot.com/a/uploads/scale_medium/1197/11970954/2399319-91zotmpue2l._sl1500_.jpg",
+      "Imagen": "https://images.emulatorgames.net/playstation-portable/fifa-14.jpg",
       "id": "dcb5"
     },
     {
@@ -153,7 +153,7 @@
       "CantLicenciasDisponibles": 1500,
       "CantLicenciasVendidas": "5.000.000",
       "CLV": 5000000,
-      "Imagen": "https://assets-prd.ignimgs.com/2021/12/08/portal2-1638924084230.jpg?width=300&crop=1%3A1%2Csmart&auto=webp",
+      "Imagen": "https://steamuserimages-a.akamaihd.net/ugc/385413871763799810/7980EF9D3D32EF01D89D950E2F4A745442ECFD51/",
       "id": "ed53"
     },
     {
@@ -198,28 +198,29 @@
   ],
   "Users": [
     {
-      "idUser": 1,
-      "NombreUsuario": "Joan123",
-      "Pass": "123",
-      "id": "4d2c"
+      "id": "0dcb",
+      "NombreUsuario": "JoanMoreno12",
+      "Correo": "joan@gmail.com",
+      "Pass": "PassW12"
+    },
+    {
+      "id": "d3b8",
+      "NombreUsuario": "Haslo",
+      "Correo": "joanDavidM@gmail.com",
+      "Pass": "pasd"
     }
   ],
   "Carrito": [
     {
-      "id": "6947",
-      "Nombre": "Gears of War 2",
+      "id": "",
+      "Nombre": "Left 4 Dead",
+      "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkadMgJo2PcLhECLlQZlehxo3dt5e3PrIIA&s",
       "Categoria": "Accion",
-      "Precio": "34.400",
-      "Cantidad": 1,
-      "idDueño": 1
-    },
-    {
-      "id": "d347",
-      "Nombre": "PES6",
-      "Categoria": "Deportes",
-      "Precio": "15.000",
-      "Cantidad": 1,
-      "idDueño": 1
+      "Precio": "23.000",
+      "Cantidad": 0
     }
+  ],
+  "MisJuegos": [
+    
   ]
 }

@@ -21,15 +21,24 @@ const Carrito = () => {
 
   const [accion, setAccion] = useState("");
 
+  const [cantAccion, setCantAccion] = useState(0);
+  const [cantDeport, setCantDeport] = useState(0);
+  const [cantPuzzle, setCantPuzzle] = useState(0);
+
   const [juegoCarrito, setJuegoCarrito] = useState({
-    id: "",
+    Nombre: "",
+    Imagen: "",
+    Categoria: "",
+    Precio: "",
+    Cantidad: 0,
   });
 
   useEffect(() => {
     async function fetchJuegos() {
       try {
-        const response = await axios.get(`http://localhost:4000/Carrito`);
+        const response = await axios.get(`http://localhost:5000/Carrito`);
         setData(response.data);
+        console.log(response.data);
       } catch (error) {
         alert("Error al obtener los juegos");
       }
@@ -45,18 +54,13 @@ const Carrito = () => {
 
   const enviar = async (e) => {
     e.preventDefault();
-    
-      alert("hola");
+
+    alert("hola");
     try {
-      if (accion === "Eliminar") {
-        if (juegoCarrito.id) {
-          const response = await axios.delete(
-            `http://localhost:4000/Carrito/${juegoCarrito.id}`
-          );  
-          console.log(response.status);
-          if (response.status === 200) {
-            setAccion("");
-          }
+      if (accion === "Comprar") {
+        const response = await axios.post(`http://localhost:5000/MisJuegos`, juegoCarrito);
+        if (response.status === 201) {
+          alert("Juego agregado correctamente");
         }
       } else if (accion === "Insertar") {
       }
@@ -141,15 +145,26 @@ const Carrito = () => {
                 </form>
               </li>
               {!user ? (
-                <li className="nav-item mx-2">
-                  <button
-                    onClick={() => setContextPage("Form")}
-                    type="button"
-                    className="btn btn-warning"
-                  >
-                    Iniciar Sesion
-                  </button>
-                </li>
+                <>
+                  <li className="nav-item mx-2">
+                    <button
+                      onClick={() => setContextPage("Form")}
+                      type="button"
+                      className="btn btn-warning"
+                    >
+                      Iniciar Sesion
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      onClick={() => setContextPage("Gate")}
+                      type="button"
+                      className="btn btn-danger"
+                    >
+                      Inicio
+                    </button>
+                  </li>
+                </>
               ) : (
                 <>
                   <li className="nav-item">
@@ -194,72 +209,119 @@ const Carrito = () => {
           </div>
         </div>
       </nav>
-
-      <div className="rounded-4 bg-dark m-5 p-5">
-        {data.map((record, index) => (
-          <div
-            key={index}
-            class={
-              record.Categoria === "Accion"
-                ? "border border-danger rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
-                : record.Categoria === "Deportes"
-                ? "border border-success rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
-                : record.Categoria === "Puzzle"
-                ? "border border-primary rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
-                : null
-            }
-          >
+      {/* Contenido del carrito */}
+      {data.length === 0 ? (
+        <div className="rounded-4 bg-dark m-5 p-5">
+          <div>
             <div class="card-body">
               <blockquote class="blockquote my-3">
-                <p
-                  className={
-                    record.Categoria === "Accion"
-                      ? "text-danger"
-                      : record.Categoria === "Deportes"
-                      ? "text-success"
-                      : record.Categoria === "Puzzle"
-                      ? "text-primary"
-                      : null
-                  }
-                >
-                  {record.Nombre}
+                <p className="text-light fs-1">
+                  Aun no hay juegos en el carrito
                 </p>
-                <footer class="blockquote-footer">{record.Precio}</footer>
+                <footer class="blockquote-footer">----</footer>
               </blockquote>
             </div>
-            <div className="pe-4">
-              <form>
-                <div className="mb-3">
-                  <input
-                    placeholder="Cantidad"
-                    type="number"
-                    className="form-control"
-                    id="exampleInputPassword1"
+          </div>
+        </div>
+      ) : (
+        <div className="rounded-4 bg-dark m-5 p-5">
+          {data.map((record, index) => (
+            <div
+              key={index}
+              class={
+                record.Categoria === "Accion"
+                  ? "border border-danger rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
+                  : record.Categoria === "Deportes"
+                  ? "border border-success rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
+                  : record.Categoria === "Puzzle"
+                  ? "border border-primary rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
+                  : null
+              }
+            >
+              <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                <div>
+                  <blockquote class="blockquote my-3">
+                    <p
+                      className={
+                        record.Categoria === "Accion"
+                          ? "text-danger"
+                          : record.Categoria === "Deportes"
+                          ? "text-success"
+                          : record.Categoria === "Puzzle"
+                          ? "text-primary"
+                          : null
+                      }
+                    >
+                      {record.Nombre}
+                    </p>
+                    <footer class="blockquote-footer">{record.Precio}</footer>
+                  </blockquote>
+                </div>
+                <div>
+                  <img
+                    src={record.Imagen}
+                    width="200"
+                    height="200"
+                    class="rounded mx-auto d-block"
+                    alt="..."
                   />
                 </div>
-                <button type="submit" className="btn btn-success me-5">
-                  Comprar
-                </button>
-                <form className="p-0" onSubmit={enviar}>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      eliminar(record.id);
-                    }}
-                    type="submit"
-                    class="btn btn-danger px-2"
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </form>
-              </form>
+                <div>
+                  <form onSubmit={enviar}>
+                    <div className="mb-3">
+                      <input
+                        placeholder="Cantidad"
+                        type="number"
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        value={juegoCarrito.Cantidad}
+                        onChange={(e) => {setJuegoCarrito(e.target.value); if(record.Categoria === "Accion" ? setCantAccion(juegoCarrito.Cantidad) : setCantAventura(juegoCarrito.Cantidad))}}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        placeholder="Precio"
+                        type="number"
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        value={record.Precio}
+                      />
+                    </div>
+                    <div className="d-flex flex-row ">
+                      <div>
+                        <button
+                          type="submit"
+                          className="btn btn-success me-5"
+                          onClick={() => {
+                            setJuegoCarrito((prevCarrito) => ({
+                              ...prevCarrito,
+                              Nombre: record.Nombre,
+                              Imagen: record.Imagen,
+                              Categoria: record.Categoria,
+                              Precio: record.Precio,
+                            }));
+                            setAccion("Comprar")
+                          }}
+                        >
+                          Comprar
+                        </button>
+                      </div>
+                      <div>
+                        <button type="submit" class="btn btn-danger px-2">
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/*footer*/}
-      <div className="py-5 bg-dark text-white text-center">
+      <div className=" mt-5 py-5 bg-dark text-white text-center">
         <p className="lead">Todos los derechos reservados</p>
         <p className="lead">Joan David Moreno Guzman</p>
         <p className="lead">2024</p>

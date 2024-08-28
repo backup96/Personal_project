@@ -1,6 +1,7 @@
 import Carrito from "../../Components/carrito.js";
 import Form from "../../Components/form.js";
 import Gate from "../../Components/gate";
+import Register from "../../Components/register.js";
 import wall from "../../img/wall.jpg";
 import { usePage } from "../../pageContext.js";
 
@@ -15,7 +16,15 @@ const Main = () => {
         backgroundAttachment: "fixed",
       }}
     >
-      {page === "Form" ? <Form /> : page === "Gate" ? <Gate /> : page === "Carrito" ? <Carrito/> : null}
+      {page === "Form" ? (
+        <Form />
+      ) : page === "Gate" ? (
+        <Gate />
+      ) : page === "Carrito" ? (
+        <Carrito />
+      ) : page === "Register" ? (
+        <Register />
+      ) : null}
     </div>
   );
 };
