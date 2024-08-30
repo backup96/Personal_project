@@ -1,6 +1,7 @@
 import Carrito from "../../Components/carrito.js";
 import Form from "../../Components/form.js";
 import Gate from "../../Components/gate";
+import MisJuegos from "../../Components/misjuegos.js";
 import Register from "../../Components/register.js";
 import wall from "../../img/wall.jpg";
 import { usePage } from "../../pageContext.js";
@@ -24,6 +25,8 @@ const Main = () => {
         <Carrito />
       ) : page === "Register" ? (
         <Register />
+      ) : page === "MisJuegos" ? (
+        <MisJuegos />
       ) : null}
     </div>
   );

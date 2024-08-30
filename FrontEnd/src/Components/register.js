@@ -51,7 +51,7 @@ const Register = () => {
   };
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark z-3  w-100 bg-dark">
         <div className="container px-lg-5">
@@ -84,106 +84,112 @@ const Register = () => {
           </div>
         </div>
       </nav>
-      <div className="d-flex justify-content-center align-items-center m-5 p-5">
-        <form
-          onSubmit={enviar}
-          className="my-1 py-5 px-4 bg-dark rounded-4 w-50"
-        >
-          <span className="text-warning text-center fs-4 fw-bold">Sing up</span>
-          {/* Correo de usuario */}
-          <div
-            id="emailHelp"
-            className="form-text text-warning mb-3 text-start"
+      {/* formulario de registro */}
+      <div className="flex-grow-1">
+        <div className="d-flex justify-content-center align-items-center m-5 p-5">
+          <form
+            onSubmit={enviar}
+            className="my-1 py-5 px-4 bg-dark rounded-4 w-50"
           >
-            <label
-              htmlFor="exampleInputEmail1"
-              className="form-label text-warning"
+            <span className="text-warning text-center fs-4 fw-bold">
+              Sing up
+            </span>
+            {/* Correo de usuario */}
+            <div
+              id="emailHelp"
+              className="form-text text-warning mb-3 text-start"
             >
-              Ingrese su correo electrónico
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              required
-              value={user.Correo}
-              onChange={(e) =>
-                setUser((prevUsuario) => ({
-                  ...prevUsuario,
-                  Correo: e.target.value,
-                }))
-              }
-            />
-          </div>
-          {/* Nombre de usuario y contraseña */}
-          <div className="d-flex flex-row">
-            <div className="w-50 me-3">
               <label
                 htmlFor="exampleInputEmail1"
                 className="form-label text-warning"
               >
-                Ingrese un nombre de usuario
+                Ingrese su correo electrónico
               </label>
               <input
-                type="text"
+                type="email"
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 required
-                value={user.NombreUsuario}
+                value={user.Correo}
                 onChange={(e) =>
                   setUser((prevUsuario) => ({
                     ...prevUsuario,
-                    NombreUsuario: e.target.value,
+                    Correo: e.target.value,
                   }))
                 }
               />
             </div>
-            <div className="w-50">
-              <label
-                htmlFor="exampleInputEmail1"
-                className="form-label text-warning"
-              >
-                Ingrese una Contraseña
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                required
-                value={user.Pass}
-                onChange={(e) =>
-                  setUser((prevUsuario) => ({
-                    ...prevUsuario,
-                    Pass: e.target.value,
-                  }))
-                }
-              />
+            {/* Nombre de usuario y contraseña */}
+            <div className="d-flex flex-row">
+              <div className="w-50 me-3">
+                <label
+                  htmlFor="exampleInputEmail1"
+                  className="form-label text-warning"
+                >
+                  Ingrese un nombre de usuario
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  required
+                  value={user.NombreUsuario}
+                  onChange={(e) =>
+                    setUser((prevUsuario) => ({
+                      ...prevUsuario,
+                      NombreUsuario: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="w-50">
+                <label
+                  htmlFor="exampleInputEmail1"
+                  className="form-label text-warning"
+                >
+                  Ingrese una Contraseña
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  required
+                  value={user.Pass}
+                  onChange={(e) =>
+                    setUser((prevUsuario) => ({
+                      ...prevUsuario,
+                      Pass: e.target.value,
+                    }))
+                  }
+                />
+              </div>
             </div>
-          </div>
-          {/* Boton de continuar y link para volver login */}
-          <div className="d-flex justify-content-center">
-            <button type="submit" className="btn btn-warning my-3 w-100">
-              Continuar
-            </button>
-          </div>
-          <Link
-            onClick={() => setContextPage("Form")}
-            className="form-text text-warning mt-3 text-decoration-none fs-6 fw-bold"
-          >
-            ¿ Ya tiene cuenta ? Inicie sesión aquí
-          </Link>
-        </form>
+            {/* Boton de continuar y link para volver login */}
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn btn-warning my-3 w-100">
+                Continuar
+              </button>
+            </div>
+            <Link
+              onClick={() => setContextPage("Form")}
+              className="form-text text-warning mt-3 text-decoration-none fs-6 fw-bold"
+            >
+              ¿ Ya tiene cuenta ? Inicie sesión aquí
+            </Link>
+          </form>
+        </div>
       </div>
+
       {/*footer*/}
       <div className="py-5 mt-5 bg-dark text-white text-center">
         <p className="lead">Todos los derechos reservados</p>
         <p className="lead">Joan David Moreno Guzman</p>
         <p className="lead">2024</p>
       </div>
-    </>
+    </div>
   );
 };
 export default Register;

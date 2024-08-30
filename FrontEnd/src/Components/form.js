@@ -4,11 +4,7 @@ import { usePage, useUser } from "../pageContext";
 import { useState } from "react";
 
 const Form = () => {
-  const [user, setUser] = useState({
-    NombreUsuario: "",
-    Correo: "",
-    Pass: "",
-  });
+  const [user, setUser] = useState([]);
   
   const { setUser: setContextUser } = useUser();
   const { setPage: setContextPage } = usePage();
@@ -25,14 +21,14 @@ const Form = () => {
       const Password = await axios.get(
         `http://localhost:5000/Users?Pass=${user.Pass}`
       );
-
       if (NombreUsuario.data.length === 0) {
         alert("Usuario no encontrado");
       } else if (Password.data.length === 0) {
         alert("Contraseña incorrecta");
       } else {
         alert("Inicio de sesión exitoso");
-        setContextUser(user);
+        setContextUser(NombreUsuario.data[0]);
+        console.log(NombreUsuario.data[0]);
         setContextPage("Gate")
       }
     } catch (error) {
@@ -42,7 +38,7 @@ const Form = () => {
   };
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark z-3  w-100 bg-dark">
         <div className="container px-lg-5">
@@ -75,7 +71,8 @@ const Form = () => {
           </div>
         </div>
       </nav>
-      <div className="d-flex justify-content-center align-items-center m-1 p-5">
+      {/* formulario de inicio */}
+      <div className="d-flex justify-content-center align-items-center m-1 p-5 flex-grow-1">
         <form
           onSubmit={enviar}
           className="my-1 py-5 px-4 bg-dark rounded-4 w-25"
@@ -127,10 +124,10 @@ const Form = () => {
             />
           </div>
           <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-warning w-100 mt-3">
-                Continuar
-              </button>
-            </div>
+            <button type="submit" className="btn btn-warning w-100 mt-3">
+              Continuar
+            </button>
+          </div>
           <div
             id="emailHelp"
             className="form-text text-warning mt-3 text-start"
@@ -150,7 +147,7 @@ const Form = () => {
         <p className="lead">Joan David Moreno Guzman</p>
         <p className="lead">2024</p>
       </div>
-    </>
+    </div>
   );
 };
 export default Form;

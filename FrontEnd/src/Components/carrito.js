@@ -2,49 +2,12 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { usePage, useUser } from "../pageContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-
-library.add(faTrash);
-library.add(faPenToSquare);
-library.add(faSquarePlus);
 
 const Carrito = () => {
   const { user } = useUser();
   const { setUser: setContextUser } = useUser();
   const { setPage: setContextPage } = usePage();
-
-  const [data, setData] = useState([]);
-
   const [accion, setAccion] = useState("");
-
-  const [cantAccion, setCantAccion] = useState(0);
-  const [cantDeport, setCantDeport] = useState(0);
-  const [cantPuzzle, setCantPuzzle] = useState(0);
-
-  const [juegoCarrito, setJuegoCarrito] = useState({
-    Nombre: "",
-    Imagen: "",
-    Categoria: "",
-    Precio: "",
-    Cantidad: 0,
-  });
-
-  useEffect(() => {
-    async function fetchJuegos() {
-      try {
-        const response = await axios.get(`http://localhost:5000/Carrito`);
-        setData(response.data);
-        console.log(response.data);
-      } catch (error) {
-        alert("Error al obtener los juegos");
-      }
-    }
-    fetchJuegos();
-  }, []);
 
   const logOut = () => {
     setContextUser(null);
@@ -52,17 +15,102 @@ const Carrito = () => {
     alert("Ha cerrado sesion");
   };
 
+  const [juego, setJuegoCarrito] = useState({
+    Nombre: "",
+    Imagen: "",
+    Categoria: "",
+    Pe: 0,
+    Tamaño: "",
+    id: "",
+    idDueño: user.id,
+    Cantidad: 0,
+  });
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function fetchJuegos() {
+      try {
+        const response = await axios.get(`http://localhost:5000/Carrito`);
+        setData(response.data);
+      } catch (error) {
+        alert("Error al obtener los juegos");
+      }
+    }
+    fetchJuegos();
+  }, []);
+
+  const total = (data) => {
+    let sumAccion = 0;
+    let sumDeport = 0;
+    let sumPuzzle = 0;
+    let pretot = 0;
+    let desc = 0;
+    data.forEach((cur) => {
+      if (cur.Categoria === "Accion") {
+        sumAccion = sumAccion + cur.Cantidad;
+        pretot = pretot + (cur.Pe * cur.Cantidad)
+      } else if (cur.Categoria === "Deportes") {
+        sumDeport = sumDeport + cur.Cantidad;
+        pretot = pretot + (cur.Pe * cur.Cantidad)
+      } else if (cur.Categoria === "Puzzle") {
+        sumPuzzle = sumPuzzle + cur.Cantidad;
+        pretot = pretot + (cur.Pe * cur.Cantidad)
+      }
+    });
+
+    if(sumPuzzle >= 25){
+      desc = ((pretot * 20 ) / 100)
+    } else if (sumAccion >= 15 && sumDeport >= 20) {
+      desc = (pretot * 15) / 100;
+    }
+    return pretot - desc;
+  };
+
   const enviar = async (e) => {
     e.preventDefault();
-
-    alert("hola");
     try {
-      if (accion === "Comprar") {
-        const response = await axios.post(`http://localhost:5000/MisJuegos`, juegoCarrito);
-        if (response.status === 201) {
-          alert("Juego agregado correctamente");
+      if (accion === "Eliminar") {
+        if (juego.id) {
+          const response = await axios.delete(
+            `http://localhost:5000/Carrito/${juego.id}`
+          );
+          console.log(response.status);
+          if (response.status === 200) {
+            setAccion("");
+          }
         }
       } else if (accion === "Insertar") {
+
+        const response1 = async (cur) => {
+        await axios.post(`http://localhost:5000/MisJuegos`, {
+          Nombre: cur.Nombre,
+          Imagen: cur.Imagen,
+          Categoria: cur.Categoria,
+          Pe: cur.Pe,
+          Tamaño: cur.Tamaño,
+          id: cur.id,
+          idDueño: user.id,
+          Cantidad: cur.Cantidad,
+          CantLicenciasDisponibles: cur.CantLicenciasDisponibles - cur.Cantidad
+        }
+      );
+        const response0 = await axios.get(`http://localhost:5000/Carrito/${cur.id}`)
+
+        const response2 = await axios.delete(
+          `http://localhost:5000/Carrito/${cur.id}`
+        );
+
+        const response3 = await axios.patch(
+          `http://localhost:5000/Juegos/${cur.id}`,
+          {
+            CantLicenciasDisponibles:
+              cur.CantLicenciasDisponibles - cur.Cantidad,
+            CantLicenciasVendidas: parseInt(cur.CantLicenciasVendidas) + parseInt(cur.Cantidad),
+          }
+        );
+      }
+        data.forEach((cur) => response1(cur))
       }
     } catch (error) {
       console.error(error);
@@ -70,20 +118,20 @@ const Carrito = () => {
     }
   };
 
-  const eliminar = (record) => {
-    const confir = window.confirm(
-      "¿ Esta seguro de quitar este juego de su lista ?"
-    );
-    if (confir) {
-      setJuegoCarrito((prevJuegoCarrito) => ({
-        ...prevJuegoCarrito,
-        id: record,
-      }));
-      setAccion(() => "Eliminar");
-    }
+  const setCurrentAccion = (accion) => {
+    setAccion(() => accion);
   };
+
+  const eliminar = (record) => {
+    setJuegoCarrito((prevJuego) => ({
+      ...prevJuego,
+      id: record,
+    }));
+    setAccion(() => "Eliminar");
+  };
+
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark  w-100 bg-dark">
         <div className="container px-lg-5">
@@ -103,47 +151,6 @@ const Carrito = () => {
           </button>
           <div className="collapse navbar-collapse" id="navConetent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item dropdown mx-3">
-                <Link
-                  className="text-warning nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Categorías
-                </Link>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="text-danger dropdown-item" href="Acción">
-                      Accion
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="text-primary dropdown-item" href="#">
-                      Puzzles
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="text-success dropdown-item" href="#">
-                      Deportes
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <form className="d-flex" role="search">
-                  <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button className="btn btn-outline-success" type="submit">
-                    Search
-                  </button>
-                </form>
-              </li>
               {!user ? (
                 <>
                   <li className="nav-item mx-2">
@@ -197,7 +204,11 @@ const Carrito = () => {
                         </button>
                       </li>
                       <li>
-                        <Link className="text-primary dropdown-item" href="#">
+                        <Link
+                          onClick={() => setContextPage("MisJuegos")}
+                          className="text-primary dropdown-item"
+                          href="#"
+                        >
                           Ver mis juegos
                         </Link>
                       </li>
@@ -210,105 +221,113 @@ const Carrito = () => {
         </div>
       </nav>
       {/* Contenido del carrito */}
-      {data.length === 0 ? (
-        <div className="rounded-4 bg-dark m-5 p-5">
-          <div>
-            <div class="card-body">
-              <blockquote class="blockquote my-3">
-                <p className="text-light fs-1">
-                  Aun no hay juegos en el carrito
-                </p>
-                <footer class="blockquote-footer">----</footer>
-              </blockquote>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="rounded-4 bg-dark m-5 p-5">
-          {data.map((record, index) => (
-            <div
-              key={index}
-              class={
-                record.Categoria === "Accion"
-                  ? "border border-danger rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
-                  : record.Categoria === "Deportes"
-                  ? "border border-success rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
-                  : record.Categoria === "Puzzle"
-                  ? "border border-primary rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
-                  : null
-              }
-            >
-              <div class="card-body d-flex flex-row justify-content-between align-items-center">
-                <div>
+      <div className="d-flex flex-row flex-grow-1">
+        <div className="w-75">
+          {data.length === 0 ? (
+            <div className="rounded-4 bg-dark mx-5 my-5 p-4">
+              <div>
+                <div class="card-body">
                   <blockquote class="blockquote my-3">
-                    <p
-                      className={
-                        record.Categoria === "Accion"
-                          ? "text-danger"
-                          : record.Categoria === "Deportes"
-                          ? "text-success"
-                          : record.Categoria === "Puzzle"
-                          ? "text-primary"
-                          : null
-                      }
-                    >
-                      {record.Nombre}
+                    <p className="text-light fs-1">
+                      Aun no hay juegos en el carrito
                     </p>
-                    <footer class="blockquote-footer">{record.Precio}</footer>
+                    <footer class="blockquote-footer">----</footer>
                   </blockquote>
                 </div>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-4 bg-dark m-5 p-5">
+              {data.map((record, index) => (
+                <>
+                  <div
+                    key={index}
+                    class={
+                      record.Categoria === "Accion"
+                        ? "border border-danger rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
+                        : record.Categoria === "Deportes"
+                        ? "border border-success rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
+                        : record.Categoria === "Puzzle"
+                        ? "border border-primary rounded-4 bg-dark m-5 p-5 card d-flex flex-row align-items-center bg-dark"
+                        : null
+                    }
+                  >
+                    <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                      <div>
+                        <blockquote class="blockquote my-3">
+                          <p
+                            className={
+                              record.Categoria === "Accion"
+                                ? "text-danger"
+                                : record.Categoria === "Deportes"
+                                ? "text-success"
+                                : record.Categoria === "Puzzle"
+                                ? "text-primary"
+                                : null
+                            }
+                          >
+                            {record.Nombre}
+                          </p>
+                          <footer class="blockquote-footer">{record.Pe}</footer>
+                        </blockquote>
+                      </div>
+                      <div>
+                        <img
+                          src={record.Imagen}
+                          width="200"
+                          height="200"
+                          class="rounded mx-auto d-block"
+                          alt="..."
+                        />
+                      </div>
+                      <div>
+                        <form onSubmit={enviar}>
+                          <div className="mb-3">
+                            <div className="fs-4 text-light">
+                              Cantidad: {record.Cantidad}
+                            </div>
+                          </div>
+                          <div className="d-flex flex-row ">
+                            <div>
+                              <button
+                                onClick={() => eliminar(record.id)}
+                                type="submit"
+                                class="btn btn-danger px-2"
+                              >
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                </>
+              ))}
+              <div className="d-flex flex-rwo">
                 <div>
-                  <img
-                    src={record.Imagen}
-                    width="200"
-                    height="200"
-                    class="rounded mx-auto d-block"
-                    alt="..."
-                  />
+                  <div className="text-end text-light me-5 fs-3">
+                    Total: ${total(data)}
+                  </div>
                 </div>
                 <div>
                   <form onSubmit={enviar}>
-                    <div className="mb-3">
-                      <input
-                        placeholder="Cantidad"
-                        type="number"
-                        className="form-control"
-                        id="exampleInputPassword1"
-                        value={juegoCarrito.Cantidad}
-                        onChange={(e) => {setJuegoCarrito(e.target.value); if(record.Categoria === "Accion" ? setCantAccion(juegoCarrito.Cantidad) : setCantAventura(juegoCarrito.Cantidad))}}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        placeholder="Precio"
-                        type="number"
-                        className="form-control"
-                        id="exampleInputPassword1"
-                        value={record.Precio}
-                      />
-                    </div>
                     <div className="d-flex flex-row ">
                       <div>
                         <button
                           type="submit"
                           className="btn btn-success me-5"
                           onClick={() => {
-                            setJuegoCarrito((prevCarrito) => ({
-                              ...prevCarrito,
-                              Nombre: record.Nombre,
-                              Imagen: record.Imagen,
-                              Categoria: record.Categoria,
-                              Precio: record.Precio,
-                            }));
-                            setAccion("Comprar")
+                            if (!user) {
+                              alert("Para comprar inicie sesión primero");
+                              setContextPage("Form");
+                            } else {
+                              setCurrentAccion("Insertar");
+                            }
                           }}
                         >
                           Comprar
-                        </button>
-                      </div>
-                      <div>
-                        <button type="submit" class="btn btn-danger px-2">
-                          Eliminar
                         </button>
                       </div>
                     </div>
@@ -316,9 +335,23 @@ const Carrito = () => {
                 </div>
               </div>
             </div>
-          ))}
+          )}
         </div>
-      )}
+        <div className="w-25">
+          <div className="rounded-4 bg-dark m-5 p-5 text-light">
+            <ul>
+              <li>
+                Por la compra de 25 licencias de juegos de rompecabezas obtenga
+                un 20 % de descuento.
+              </li>
+              <li>
+                Por la compra de 15 licencias de juegos de acción y 20 licencias
+                de deportes obtenga un 15 % de descuento.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       {/*footer*/}
       <div className=" mt-5 py-5 bg-dark text-white text-center">
@@ -326,7 +359,7 @@ const Carrito = () => {
         <p className="lead">Joan David Moreno Guzman</p>
         <p className="lead">2024</p>
       </div>
-    </>
+    </div>
   );
 };
 export default Carrito;

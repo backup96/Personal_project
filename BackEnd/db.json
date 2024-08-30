@@ -7,8 +7,8 @@
       "Tamaño": 12,
       "Precio": "34.400",
       "Pe": 34400,
-      "CantLicenciasDisponibles": 180,
-      "CantLicenciasVendidas": "6.314.500",
+      "CantLicenciasDisponibles": 144,
+      "CantLicenciasVendidas": 6314532,
       "CLV": 6314500,
       "Imagen": "https://cdn.gearsofwar.com/gearsofwar/sites/9/2020/02/gears-of-war-2-5e4712bb05532-1024x1024.jpg",
       "id": "a315"
@@ -20,8 +20,8 @@
       "Tamaño": 70,
       "Precio": "64.500",
       "Pe": 64500,
-      "CantLicenciasDisponibles": 450,
-      "CantLicenciasVendidas": "825.000.000",
+      "CantLicenciasDisponibles": 437,
+      "CantLicenciasVendidas": 825000013,
       "CLV": 825000000,
       "Imagen": "https://upload.wikimedia.org/wikipedia/en/1/16/Days_Gone_cover_art.jpg",
       "id": "c573"
@@ -34,7 +34,7 @@
       "Precio": "23.000",
       "Pe": 23000,
       "CantLicenciasDisponibles": 1200,
-      "CantLicenciasVendidas": "3.000.000",
+      "CantLicenciasVendidas": 3000000,
       "CLV": 3000000,
       "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkadMgJo2PcLhECLlQZlehxo3dt5e3PrIIA&s",
       "id": "1f48"
@@ -46,8 +46,8 @@
       "Tamaño": 3.9,
       "Precio": "18.000",
       "Pe": 18000,
-      "CantLicenciasDisponibles": 500,
-      "CantLicenciasVendidas": "1.500.000",
+      "CantLicenciasDisponibles": 485,
+      "CantLicenciasVendidas": 1500015,
       "CLV": 1500000,
       "Imagen": "https://image.api.playstation.com/cdn/UP1004/CUSA03512_00/udlJ1aHIZdPyMZZwglL0IBpHfCt80C1B.png",
       "id": "57a9"
@@ -59,8 +59,8 @@
       "Tamaño": 48,
       "Precio": "74.000",
       "Pe": 74000,
-      "CantLicenciasDisponibles": 350,
-      "CantLicenciasVendidas": "20.000.000",
+      "CantLicenciasDisponibles": 343,
+      "CantLicenciasVendidas": 20000007,
       "CLV": 20000000,
       "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg8NMe1YE7CtPqM3WMVYdwarZhyWAfBOSZ8g&s",
       "id": "a5f3"
@@ -72,8 +72,8 @@
       "Tamaño": 4.5,
       "Precio": "15.000",
       "Pe": 15000,
-      "CantLicenciasDisponibles": 2000,
-      "CantLicenciasVendidas": "10.000.000",
+      "CantLicenciasDisponibles": 1960,
+      "CantLicenciasVendidas": 10000040,
       "CLV": 10000000,
       "Imagen": "https://i1.sndcdn.com/artworks-rJQzejugOwkWqAIK-i7SPKQ-t500x500.jpg",
       "id": "b8ed"
@@ -86,7 +86,7 @@
       "Precio": "80.000",
       "Pe": 80000,
       "CantLicenciasDisponibles": 1500,
-      "CantLicenciasVendidas": "500.000",
+      "CantLicenciasVendidas": 500000,
       "CLV": 500000,
       "Imagen": "https://image.api.playstation.com/vulcan/ap/rnd/202307/2809/03f24f06573f21a2b3b5279b26205b0f882acf8a31d5dabd.png",
       "id": "08d0"
@@ -99,7 +99,7 @@
       "Precio": "45.000",
       "Pe": 45000,
       "CantLicenciasDisponibles": 1200,
-      "CantLicenciasVendidas": "14.000.000",
+      "CantLicenciasVendidas": 14000000,
       "CLV": 14000000,
       "Imagen": "https://images.emulatorgames.net/playstation-portable/fifa-14.jpg",
       "id": "dcb5"
@@ -124,8 +124,8 @@
       "Tamaño": 50,
       "Precio": "70.000",
       "Pe": 70000,
-      "CantLicenciasDisponibles": 900,
-      "CantLicenciasVendidas": "2.500.000",
+      "CantLicenciasDisponibles": 880,
+      "CantLicenciasVendidas": 22,
       "CLV": 2500000,
       "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmKstN1pEFIk6wsFypakNLI3UI-ykBlNYquA&s",
       "id": "b13e"
@@ -177,7 +177,7 @@
       "Precio": "20.000",
       "Pe": 20000,
       "CantLicenciasDisponibles": 400,
-      "CantLicenciasVendidas": "500.000",
+      "CantLicenciasVendidas": 500,
       "CLV": 500000,
       "Imagen": "https://play-lh.googleusercontent.com/ew5vyJJOl3pGclUECgDOkmUc7PgQZWsv19zS9Le42l2aBNuzCHUKTrSrnt4AoGP2EA",
       "id": "a7e3"
@@ -198,29 +198,35 @@
   ],
   "Users": [
     {
-      "id": "0dcb",
-      "NombreUsuario": "JoanMoreno12",
-      "Correo": "joan@gmail.com",
-      "Pass": "PassW12"
+      "id": "4a45",
+      "NombreUsuario": "Salaman12",
+      "Correo": "david@gmail.com",
+      "Pass": "PassG1@"
+    }
+  ],
+  "Carrito": [],
+  "MisJuegos": [
+    {
+      "id": "a315",
+      "Nombre": "Gears of War 2",
+      "Imagen": "https://cdn.gearsofwar.com/gearsofwar/sites/9/2020/02/gears-of-war-2-5e4712bb05532-1024x1024.jpg",
+      "Categoria": "Accion",
+      "Pe": 34400,
+      "Tamaño": 12,
+      "idDueño": "4a45",
+      "Cantidad": "1",
+      "CantLicenciasDisponibles": 144
     },
     {
-      "id": "d3b8",
-      "NombreUsuario": "Haslo",
-      "Correo": "joanDavidM@gmail.com",
-      "Pass": "pasd"
+      "id": "b8ed",
+      "Nombre": "PES6",
+      "Imagen": "https://i1.sndcdn.com/artworks-rJQzejugOwkWqAIK-i7SPKQ-t500x500.jpg",
+      "Categoria": "Deportes",
+      "Pe": 15000,
+      "Tamaño": 4.5,
+      "idDueño": "4a45",
+      "Cantidad": "10",
+      "CantLicenciasDisponibles": 1960
     }
-  ],
-  "Carrito": [
-    {
-      "id": "",
-      "Nombre": "Left 4 Dead",
-      "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkadMgJo2PcLhECLlQZlehxo3dt5e3PrIIA&s",
-      "Categoria": "Accion",
-      "Precio": "23.000",
-      "Cantidad": 0
-    }
-  ],
-  "MisJuegos": [
-    
   ]
 }

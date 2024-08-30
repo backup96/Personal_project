@@ -13,18 +13,22 @@ const Gate = () => {
     Categoria: "",
     Tamaño: "",
     Precio: "",
+    Pe: 0,
     CantLicenciasDisponibles: "",
     CantLicenciasVendidas: "",
     Imagen: "",
-  });
-
-  const [car, setCarrito] = useState({
     id: "",
+  });
+  const [car, setCarrito] = useState({
     Nombre: "",
-    Imagen: "",
     Categoria: "",
-    Precio: "",
-    Cantidad: "",
+    Tamaño: "",
+    CantLicenciasDisponibles: 0,
+    CantLicenciasVendidas: 0,
+    Pe: 0,
+    Imagen: "",
+    idDueño: user.id,
+    id: "",
   });
 
   useEffect((dataCarrito) => {
@@ -103,58 +107,54 @@ const Gate = () => {
                 </Link>
                 <ul className="dropdown-menu">
                   <li>
-                    <Link className="text-danger dropdown-item" href="Acción">
+                    <a className="text-danger dropdown-item" href="#Accion">
                       Accion
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link className="text-primary dropdown-item" href="#">
-                      Puzzles
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="text-success dropdown-item" href="#">
+                    <a className="text-success dropdown-item" href="#Deportes">
                       Deportes
-                    </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a className="text-primary dropdown-item" href="#Puzzles">
+                      Puzzles
+                    </a>
                   </li>
                 </ul>
               </li>
-              <li className="nav-item">
-                <form className="d-flex" role="search">
-                  <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button className="btn btn-outline-success" type="submit">
-                    Search
-                  </button>
-                </form>
-              </li>
               {!user ? (
                 <>
-                <li className="nav-item mx-2">
-                  <button
-                    onClick={() => setContextPage("Form")}
-                    type="button"
-                    className="btn btn-warning"
-                  >
-                    Iniciar Sesion
-                  </button>
-                </li>
-                <li className="nav-item">
-                <button
-                  onClick={() => setContextPage("Carrito")}
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  Carrito
-                </button>
-              </li>
+                  <li className="nav-item mx-2">
+                    <button
+                      onClick={() => setContextPage("Form")}
+                      type="button"
+                      className="btn btn-warning"
+                    >
+                      Iniciar Sesion
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      onClick={() => setContextPage("Carrito")}
+                      type="button"
+                      className="btn btn-primary"
+                    >
+                      Carrito
+                    </button>
+                  </li>
                 </>
               ) : (
                 <>
+                  <li className="nav-item ms-3">
+                    <button
+                      onClick={() => setContextPage("Carrito")}
+                      type="button"
+                      className="btn btn-primary"
+                    >
+                      Carrito
+                    </button>
+                  </li>
                   <li className="nav-item dropdown mx-3">
                     <Link
                       className="btn btn-warning"
@@ -176,7 +176,11 @@ const Gate = () => {
                         </button>
                       </li>
                       <li>
-                        <Link className="text-primary dropdown-item" href="#">
+                        <Link
+                          onClick={() => setContextPage("MisJuegos")}
+                          className="text-primary dropdown-item"
+                          href="#"
+                        >
                           Ver mis juegos
                         </Link>
                       </li>
@@ -238,12 +242,15 @@ const Gate = () => {
       <div className="m-5">
         <div className="text-warning text-center fs-1 fw-bolder">TITULOS</div>
         {/* Acción */}
-        <div
-          id="Acción"
-          className="z-0 position-absolute rounded-4 bg-danger px-4 py-2 ms-5 mt-4"
-        >
-          <span className="fw-bolder">Acción</span>
-        </div>
+        <section id="Accion">
+          <div
+            id="Acción"
+            className="z-0 position-absolute rounded-4 bg-danger px-4 py-2 ms-5 mt-4"
+          >
+            <span className="fw-bolder">Acción</span>
+          </div>
+        </section>
+
         <div className="d-flex flex-row justify-content-around flex-wrap mt-5 py-4 border rounded-4 border-danger">
           {data.map((record, index) =>
             record.Categoria === "Accion" ? (
@@ -274,11 +281,13 @@ const Gate = () => {
                               Categoria: record.Categoria,
                               Tamaño: record.Tamaño,
                               Precio: record.Precio,
+                              Pe: record.Pe,
                               CantLicenciasDisponibles:
                                 record.CantLicenciasDisponibles,
                               CantLicenciasVendidas:
                                 record.CantLicenciasVendidas,
                               Imagen: record.Imagen,
+                              id: record.id,
                             }));
                           }}
                         >
@@ -292,13 +301,17 @@ const Gate = () => {
             ) : null
           )}
         </div>
+
         {/* Deportes */}
-        <div
-          id="Deportes"
-          className="z-0 position-absolute rounded-4 bg-success px-4 py-2 ms-5 mt-4"
-        >
-          <span className="fw-bolder">Deportes</span>
-        </div>
+        <section id="Deportes">
+          <div
+            id="Deportes"
+            className="z-0 position-absolute rounded-4 bg-success px-4 py-2 ms-5 mt-4"
+          >
+            <span className="fw-bolder">Deportes</span>
+          </div>
+        </section>
+
         <div className="d-flex flex-row justify-content-around flex-wrap mt-5 py-4 border rounded-4 border-success">
           {data.map((record, index) =>
             record.Categoria === "Deportes" ? (
@@ -329,11 +342,13 @@ const Gate = () => {
                               Categoria: record.Categoria,
                               Tamaño: record.Tamaño,
                               Precio: record.Precio,
+                              Pe: record.Pe,
                               CantLicenciasDisponibles:
                                 record.CantLicenciasDisponibles,
                               CantLicenciasVendidas:
                                 record.CantLicenciasVendidas,
                               Imagen: record.Imagen,
+                              id: record.id,
                             }));
                           }}
                         >
@@ -348,12 +363,15 @@ const Gate = () => {
           )}
         </div>
         {/* Puzzles */}
-        <div
-          id="Puzzles"
-          className="z-0 position-absolute rounded-4 bg-primary px-4 py-2 ms-5 mt-4"
-        >
-          <span className="fw-bolder">Puzzles</span>
-        </div>
+        <section id="Puzzles">
+          <div
+            id="Puzzles"
+            className="z-0 position-absolute rounded-4 bg-primary px-4 py-2 ms-5 mt-4"
+          >
+            <span className="fw-bolder">Puzzles</span>
+          </div>
+        </section>
+
         <div className="d-flex flex-row justify-content-around flex-wrap mt-5 py-4 border rounded-4 border-primary">
           {data.map((record, index) =>
             record.Categoria === "Puzzle" ? (
@@ -384,11 +402,13 @@ const Gate = () => {
                               Categoria: record.Categoria,
                               Tamaño: record.Tamaño,
                               Precio: record.Precio,
+                              Pe: record.Pe,
                               CantLicenciasDisponibles:
                                 record.CantLicenciasDisponibles,
                               CantLicenciasVendidas:
                                 record.CantLicenciasVendidas,
                               Imagen: record.Imagen,
+                              id: record.id,
                             }));
                           }}
                         >
@@ -403,6 +423,7 @@ const Gate = () => {
           )}
         </div>
       </div>
+
       {/* modals */}
       <div
         className="modal fade"
@@ -462,6 +483,27 @@ const Gate = () => {
                       Cant. Licencias vendidas:
                       {` ${dataE.CantLicenciasVendidas}`}
                     </li>
+                    <li className="list-group-item p-2">
+                      <div className="d-flex flex-row justify-content-center">
+                        <div className="w-75 ">Cant. Licencias a comprar:</div>
+                        <div>
+                          <input
+                            type="number"
+                            className="form-control w-75"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                            required
+                            value={car.Cantidad}
+                            onChange={(e) =>
+                              setCarrito((prevUsuario) => ({
+                                ...prevUsuario,
+                                Cantidad: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                      </div>
+                    </li>
                   </ul>
                 </div>
                 <div className="w-50">
@@ -489,8 +531,11 @@ const Gate = () => {
                       Nombre: dataE.Nombre,
                       Imagen: dataE.Imagen,
                       Categoria: dataE.Categoria,
-                      Precio: dataE.Precio,
-                      Cantidad: 0,
+                      CantLicenciasDisponibles: dataE.CantLicenciasDisponibles,
+                      CantLicenciasVendidas: dataE.CantLicenciasVendidas,
+                      Pe: dataE.Pe,
+                      Tamaño: dataE.Tamaño,
+                      id: dataE.id,
                     }))
                   }
                   type="submit"
@@ -504,6 +549,7 @@ const Gate = () => {
           </div>
         </div>
       </div>
+
       {/*footer*/}
       <div className="py-5 bg-dark text-white text-center">
         <p className="lead">Todos los derechos reservados</p>
