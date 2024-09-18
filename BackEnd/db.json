@@ -7,8 +7,8 @@
       "Tamaño": 12,
       "Precio": "34.400",
       "Pe": 34400,
-      "CantLicenciasDisponibles": 144,
-      "CantLicenciasVendidas": 6314532,
+      "CantLicenciasDisponibles": 145,
+      "CantLicenciasVendidas": 6314531,
       "CLV": 6314500,
       "Imagen": "https://cdn.gearsofwar.com/gearsofwar/sites/9/2020/02/gears-of-war-2-5e4712bb05532-1024x1024.jpg",
       "id": "a315"
@@ -46,8 +46,8 @@
       "Tamaño": 3.9,
       "Precio": "18.000",
       "Pe": 18000,
-      "CantLicenciasDisponibles": 485,
-      "CantLicenciasVendidas": 1500015,
+      "CantLicenciasDisponibles": null,
+      "CantLicenciasVendidas": null,
       "CLV": 1500000,
       "Imagen": "https://image.api.playstation.com/cdn/UP1004/CUSA03512_00/udlJ1aHIZdPyMZZwglL0IBpHfCt80C1B.png",
       "id": "57a9"
@@ -72,8 +72,8 @@
       "Tamaño": 4.5,
       "Precio": "15.000",
       "Pe": 15000,
-      "CantLicenciasDisponibles": 1960,
-      "CantLicenciasVendidas": 10000040,
+      "CantLicenciasDisponibles": 1970,
+      "CantLicenciasVendidas": 10000030,
       "CLV": 10000000,
       "Imagen": "https://i1.sndcdn.com/artworks-rJQzejugOwkWqAIK-i7SPKQ-t500x500.jpg",
       "id": "b8ed"
@@ -202,31 +202,14 @@
       "NombreUsuario": "Salaman12",
       "Correo": "david@gmail.com",
       "Pass": "PassG1@"
+    },
+    {
+      "id": "0c07",
+      "NombreUsuario": "JoanMoreno12",
+      "Correo": "joan@joan",
+      "Pass": "Hola277353@"
     }
   ],
   "Carrito": [],
-  "MisJuegos": [
-    {
-      "id": "a315",
-      "Nombre": "Gears of War 2",
-      "Imagen": "https://cdn.gearsofwar.com/gearsofwar/sites/9/2020/02/gears-of-war-2-5e4712bb05532-1024x1024.jpg",
-      "Categoria": "Accion",
-      "Pe": 34400,
-      "Tamaño": 12,
-      "idDueño": "4a45",
-      "Cantidad": "1",
-      "CantLicenciasDisponibles": 144
-    },
-    {
-      "id": "b8ed",
-      "Nombre": "PES6",
-      "Imagen": "https://i1.sndcdn.com/artworks-rJQzejugOwkWqAIK-i7SPKQ-t500x500.jpg",
-      "Categoria": "Deportes",
-      "Pe": 15000,
-      "Tamaño": 4.5,
-      "idDueño": "4a45",
-      "Cantidad": "10",
-      "CantLicenciasDisponibles": 1960
-    }
-  ]
+  "MisJuegos": []
 }
