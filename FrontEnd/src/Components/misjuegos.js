@@ -1,15 +1,27 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { usePage, useUser } from "../pageContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const MisJuegos = () => {
+  const alertSuccess = () => {
+    toast.success("Licencias vendidas satisfactoriamente");
+  };
   const { user } = useUser();
   const { page } = usePage();
   const { setUser: setContextUser } = useUser();
   const { setPage: setContextPage } = usePage();
 
   const [data, setData] = useState([]);
-  const [data2, setData2] = useState([])
+  const [data2, setData2] = useState([]);
   const [dataE, setDataE] = useState({
     Nombre: "",
     Categoria: "",
@@ -19,7 +31,7 @@ const MisJuegos = () => {
     CantLicenciasVendidas: "",
     Imagen: "",
     id: "",
-    idDueño: ""
+    idDueño: "",
   });
 
   const [car, setCarrito] = useState({
@@ -30,13 +42,13 @@ const MisJuegos = () => {
     Cantidad: 0,
   });
 
-  useEffect((dataCarrito) => {
+  useEffect(() => {
     async function fetchJuegos() {
       try {
-        const response = await axios.get(`http://localhost:5000/MisJuegos`);
+        const response = await axios.get(
+          `http://localhost:5000/MisJuegos?idDueño=${user.id}`
+        );
         setData(response.data);
-        const response1 = await axios.get(`http://localhost:5000/Juegos`)
-        setData2(response1.data)
       } catch (error) {
         alert("Error al obtener los juegos");
       }
@@ -53,24 +65,23 @@ const MisJuegos = () => {
   const vender = async (e) => {
     e.preventDefault();
     try {
-
       const verResponse = async (cur) => {
-        if (cur.id === car.id){
+        if (cur.id === car.id) {
           await axios.patch(`http://localhost:5000/Juegos/${car.id}`, {
             CantLicenciasDisponibles:
               parseInt(cur.CantLicenciasDisponibles) + parseInt(car.Cantidad),
             CantLicenciasVendidas:
-              parseInt(cur.CantLicenciasVendidas) - parseInt(car.Cantidad)
-          }); 
+              parseInt(cur.CantLicenciasVendidas) - parseInt(car.Cantidad),
+          });
           console.log(cur.CantLicenciasDisponibles);
-          console.log(car.Cantidad) 
+          console.log(car.Cantidad);
         }
-        }
+      };
 
       const upMyGames = await axios.patch(
         `http://localhost:5000/MisJuegos/${car.id}`,
         {
-          Cantidad: car.OldCant - car.Cantidad 
+          Cantidad: car.OldCant - car.Cantidad,
         }
       );
       data2.map((cur) => verResponse(cur));
@@ -78,20 +89,59 @@ const MisJuegos = () => {
         const response1 = await axios.delete(
           `http://localhost:5000/MisJuegos/${car.id}`
         );
+        setData((prevData) =>
+          prevData.filter((item) => (item.id !== car.id ? item : null))
+        );
       }
+      alertSuccess()
     } catch (error) {
       console.error(error);
       alert("Ocurrió un error al intentar agregar el juego al carrito");
     }
   };
 
+  const addLic = async (cur, cantAct) => {
+    try {
+      await axios.patch(`http://localhost:5000/Carrito/${cur}`, {
+        Cantidad: cantAct + 1,
+      });
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === cur ? { ...item, Cantidad: cantAct + 1 } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error al actualizar la cantidad");
+    }
+  };
+
+  const delLic = async (cur, cantAct) => {
+    try {
+      await axios.patch(`http://localhost:5000/Carrito/${cur}`, {
+        Cantidad: cantAct - 1,
+      });
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === cur ? { ...item, Cantidad: cantAct - 1 } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error al actualizar la cantidad");
+    }
+  };
+
   return (
     <div className="d-flex flex-column min-vh-100">
+      <ToastContainer />
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark z-3 position-fixed w-100 bg-dark">
         <div className="container px-lg-5">
-          <Link className="text-warning navbar-brand" to="#">
+          <Link
+            onClick={() => setContextPage("Gate")}
+            className="text-warning navbar-brand"
+          >
             GameShop
+            <FontAwesomeIcon icon={faArrowLeft} className="ms-4" />
           </Link>
           <button
             className="navbar-toggler"
@@ -106,47 +156,6 @@ const MisJuegos = () => {
           </button>
           <div className="collapse navbar-collapse" id="navConetent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item dropdown mx-3">
-                <Link
-                  className="text-warning nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Categorías
-                </Link>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="text-danger dropdown-item" href="Acción">
-                      Accion
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="text-primary dropdown-item" href="#">
-                      Puzzles
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="text-success dropdown-item" href="#">
-                      Deportes
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <form className="d-flex" role="search">
-                  <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button className="btn btn-outline-success" type="submit">
-                    Search
-                  </button>
-                </form>
-              </li>
               {!user ? (
                 <>
                   <li className="nav-item mx-2">
@@ -164,61 +173,30 @@ const MisJuegos = () => {
                       type="button"
                       className="btn btn-primary"
                     >
-                      Carrito
+                      <FontAwesomeIcon icon={faCartShopping} />
                     </button>
                   </li>
                 </>
               ) : (
                 <>
-                  <li className="nav-item ms-3">
+                  <li className="nav-item me-3">
                     <button
                       onClick={() => setContextPage("Carrito")}
                       type="button"
                       className="btn btn-primary"
                     >
-                      Carrito
+                      <FontAwesomeIcon icon={faCartShopping} />
                     </button>
                   </li>
-                  <li className="nav-item dropdown mx-3">
-                    <Link
-                      className="btn btn-warning"
-                      to="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
+                  <li>
+                    <button
+                      className="btn btn-danger"
+                      href="Acción"
+                      onClick={() => logOut()}
                     >
-                      Perfil
-                    </Link>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <button
-                          className="text-danger dropdown-item"
-                          href="Acción"
-                          onClick={() => logOut()}
-                        >
-                          Cerrar sesion
-                        </button>
-                      </li>
-                      <li>
-                        {page === "MisJuegos" ? (
-                          <Link
-                            onClick={() => setContextPage("Gate")}
-                            className="text-primary dropdown-item"
-                            href="#"
-                          >
-                            Volver al inicio
-                          </Link>
-                        ) : (
-                          <Link
-                            onClick={() => setContextPage("MisJuegos")}
-                            className="text-primary dropdown-item"
-                            href="#"
-                          >
-                            Ver mis juegos
-                          </Link>
-                        )}
-                      </li>
-                    </ul>
+                      Cerrar sesión{" "}
+                      <FontAwesomeIcon icon={faRightFromBracket} />
+                    </button>
                   </li>
                 </>
               )}
@@ -237,12 +215,12 @@ const MisJuegos = () => {
           <span className="fw-bolder">Mis Juegos</span>
         </div>
         <div className="d-flex flex-row justify-content-around flex-wrap mt-5 py-4 border rounded-4 border-warning">
-          {data.map((record, index) => (
-            <div key={index} className="p-4">
-              <div className="card" style={{ width: "18rem" }}>
-                <img src={record.Imagen} className="card-img-top" alt="..." />
-                <div className="card-body">
-                  <div className="d-flex">
+          {data.length > 0 ? (
+            data.map((record, index) => (
+              <div key={index} className="p-4">
+                <div className="card" style={{ width: "18rem" }}>
+                  <img src={record.Imagen} className="card-img-top" alt="..." />
+                  <div className="card-body">
                     <div className="py-2 pe-4">
                       <button
                         type="button"
@@ -260,7 +238,7 @@ const MisJuegos = () => {
                             Cantidad: record.Cantidad,
                             Imagen: record.Imagen,
                             id: record.id,
-                            idDueño: record.idDueño
+                            idDueño: record.idDueño,
                           }));
                         }}
                       >
@@ -270,8 +248,12 @@ const MisJuegos = () => {
                   </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="w-100 h-100 mx-5 p-5 d-flex justify-content-center rounded-4 bg-dark">
+              <div className="text-light fs-1">No hay juegos comprados</div>
             </div>
-          ))}
+          )}
         </div>
       </div>
       {/* modals */}
@@ -283,14 +265,17 @@ const MisJuegos = () => {
         aria-hidden="true"
       >
         <div className="modal-dialog  modal-lg">
-          <div className="modal-content">
+          <div data-bs-theme="dark" className="modal-content bg-dark">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
+              <h1
+                className="modal-title fs-5 text-light"
+                id="exampleModalLabel"
+              >
                 Mis juegos
               </h1>
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close btn-light"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -299,8 +284,10 @@ const MisJuegos = () => {
               <div className="d-flex">
                 <div className="w-50">
                   <ul>
-                    <li className="list-group-item p-2">{dataE.Nombre}</li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
+                      {dataE.Nombre}
+                    </li>
+                    <li className="list-group-item p-2 text-light">
                       Categoria:{" "}
                       <span
                         className={
@@ -316,41 +303,46 @@ const MisJuegos = () => {
                         {dataE.Categoria}
                       </span>
                     </li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
                       Tamaño:
                       {` ${dataE.Tamaño} `}
                       GB
                     </li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
                       Precio: ${` ${dataE.Pe} `}
                       COP
                     </li>
-                    <li className="list-group-item p-2">
-                      Cant. copias vendidas:{` ${dataE.Cantidad} `}
+                    <li className="list-group-item p-2 text-light">
+                      Cant. copias compradas:{` ${dataE.Cantidad} `}
                     </li>
                     <li className="list-group-item p-2">
-                      <div className="d-flex flex-row justify-content-start">
-                        <div className="me-3 text-success">
-                          Cant. Licencias a vender:
-                        </div>
-                        <div className="">
-                          <input
-                            type="number"
-                            min="0"
-                            max={dataE.Cantidad}
-                            className="form-control  border border-success"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
-                            required
-                            value={car.Cantidad}
-                            onChange={(e) =>
-                              setCarrito((prevUsuario) => ({
-                                ...prevUsuario,
-                                Cantidad: e.target.value,
-                              }))
-                            }
-                          />
-                        </div>
+                      <div className="fs-4 text-light d-flex flex-row aling-items-center">
+                        <p>Cantidad:</p>
+                        <button
+                          type="button"
+                          className={`btn btn-primary p-0 mx-3 ${
+                            car.Cantidad === 0 ? "disabled" : ""
+                          }`}
+                          style={{ width: "30px", height: "30px" }}
+                          onClick={() =>
+                            setCarrito({ ...car, Cantidad: car.Cantidad - 1 })
+                          }
+                        >
+                          <FontAwesomeIcon icon={faMinus} />
+                        </button>{" "}
+                        {car.Cantidad}
+                        <button
+                          type="button"
+                          className={`btn btn-success p-0 mx-3 ${
+                            car.Cantidad === dataE.Cantidad ? "disabled" : ""
+                          }`}
+                          style={{ width: "30px", height: "30px" }}
+                          onClick={() =>
+                            setCarrito({ ...car, Cantidad: car.Cantidad + 1 })
+                          }
+                        >
+                          <FontAwesomeIcon icon={faPlus} />
+                        </button>
                       </div>
                     </li>
                   </ul>
@@ -373,12 +365,14 @@ const MisJuegos = () => {
                       id: dataE.id,
                       CantLicenciasDisponibles: dataE.CantLicenciasDisponibles,
                       idDueño: dataE.idDueño,
-                      OldCant: dataE.Cantidad
+                      OldCant: dataE.Cantidad,
                     }))
                   }
                   type="submit"
                   data-bs-dismiss="modal"
-                  className="btn btn-success"
+                  className={`btn btn-success ${
+                    car.Cantidad === 0 ? "disabled" : ""
+                  }`}
                 >
                   Vender juego
                 </button>

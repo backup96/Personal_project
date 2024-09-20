@@ -1,7 +1,13 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { usePage } from "../pageContext";
 import axios from "axios";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -9,6 +15,16 @@ const Register = () => {
     Correo: "",
     Pass: "",
   });
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const alertSuccessUser = () => {
+    toast.success("Usuario registrado con éxito");
+  };
 
   const { setPage: setContextPage } = usePage();
 
@@ -40,8 +56,7 @@ const Register = () => {
         });
         console.log(registro.status);
         if (registro.status === 201) {
-          alert("Usuario registrado con éxito");
-          setContextPage("Form");
+          alertSuccessUser();
         }
       }
     } catch (error) {
@@ -52,36 +67,17 @@ const Register = () => {
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      <ToastContainer />
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark z-3  w-100 bg-dark">
-        <div className="container px-lg-5">
-          <Link className="text-warning navbar-brand" to="#">
-            GameShop
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navConetent"
-            aria-controls="navConetent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+        <div className="container px-lg-5 d-flex justify-content-center">
+          <Link
+            onClick={() => setContextPage("Gate")}
+            className="text-warning navbar-brand"
           >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navConetent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <button
-                  className="btn btn-warning"
-                  href="Acción"
-                  onClick={() => setContextPage("Gate")}
-                >
-                  Inicio
-                </button>
-              </li>
-            </ul>
-          </div>
+            GameShop
+            <FontAwesomeIcon icon={faArrowLeft} className="ms-4" />
+          </Link>
         </div>
       </nav>
       {/* formulario de registro */}
@@ -151,20 +147,32 @@ const Register = () => {
                 >
                   Ingrese una Contraseña
                 </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  required
-                  value={user.Pass}
-                  onChange={(e) =>
-                    setUser((prevUsuario) => ({
-                      ...prevUsuario,
-                      Pass: e.target.value,
-                    }))
-                  }
-                />
+                <div className="position-relative">
+                  <Link
+                    className="z-0 position-absolute top-50 start-100 translate-middle"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {passwordVisible ? (
+                      <FontAwesomeIcon icon={faEyeSlash} className="me-5" />
+                    ) : (
+                      <FontAwesomeIcon icon={faEye} className="me-5" />
+                    )}
+                  </Link>
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    required
+                    value={user.Pass}
+                    onChange={(e) =>
+                      setUser((prevUsuario) => ({
+                        ...prevUsuario,
+                        Pass: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                ;
               </div>
             </div>
             {/* Boton de continuar y link para volver login */}

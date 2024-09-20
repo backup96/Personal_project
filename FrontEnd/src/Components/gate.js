@@ -1,8 +1,30 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { usePage, useUser } from "../pageContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Gate = () => {
+  const alertSuccess = () => {
+    toast.success("Juego agregado correctamente");
+  };
+
+  const alertWarn = () => {
+    toast.warn("Este juego ya esta en tu carrito");
+  };
+
+  const alertError = () => {
+    toast.error("La api no esta encendida");
+  };
+
+  const alertErrorCarrito = () => {
+    toast.error("Ocurrio un error al intentar agregar el juego");
+  };
+
   const { user } = useUser();
   const { setUser: setContextUser } = useUser();
   const { setPage: setContextPage } = usePage();
@@ -26,8 +48,8 @@ const Gate = () => {
     CantLicenciasDisponibles: 0,
     CantLicenciasVendidas: 0,
     Pe: 0,
+    Cantidad: 1,
     Imagen: "",
-    idDueño: user.id,
     id: "",
   });
 
@@ -39,7 +61,7 @@ const Gate = () => {
         );
         setData(response.data);
       } catch (error) {
-        alert("Error al obtener los juegos");
+        alertError();
       }
     }
     fetchJuegos();
@@ -48,7 +70,6 @@ const Gate = () => {
   const logOut = () => {
     setContextUser(null);
     setContextPage("Form");
-    alert("Ha cerrado sesion");
   };
 
   const carrito = async (e) => {
@@ -56,19 +77,19 @@ const Gate = () => {
     try {
       const verResponse = await axios.get(`http://localhost:5000/Carrito/`);
       const val = verResponse.data.filter(
-        (juego) => juego.Nombre === car.Nombre && juego.idDueño === user.idUser
+        (juego) => juego.Nombre === car.Nombre
       );
       if (val.length > 0) {
-        alert("Este juego ya esta en tu carrito");
+        alertWarn();
       } else {
         const response = await axios.post(`http://localhost:5000/Carrito`, car);
         if (response.status === 201) {
-          alert("Juego agregado correctamente");
+          alertSuccess();
         }
       }
     } catch (error) {
       console.error(error);
-      alert("Ocurrió un error al intentar agregar el juego al carrito");
+      alertErrorCarrito();
     }
   };
 
@@ -76,12 +97,11 @@ const Gate = () => {
 
   return (
     <>
+      <ToastContainer />
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark z-3 position-fixed w-100 bg-dark">
         <div className="container px-lg-5">
-          <Link className="text-warning navbar-brand" to="#">
-            GameShop
-          </Link>
+          <div className="text-warning navbar-brand">GameShop</div>
           <button
             className="navbar-toggler"
             type="button"
@@ -140,7 +160,7 @@ const Gate = () => {
                       type="button"
                       className="btn btn-primary"
                     >
-                      Carrito
+                      <FontAwesomeIcon icon={faCartShopping} />
                     </button>
                   </li>
                 </>
@@ -152,7 +172,7 @@ const Gate = () => {
                       type="button"
                       className="btn btn-primary"
                     >
-                      Carrito
+                      <FontAwesomeIcon icon={faCartShopping} />
                     </button>
                   </li>
                   <li className="nav-item dropdown mx-3">
@@ -163,7 +183,7 @@ const Gate = () => {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      Perfil
+                      <FontAwesomeIcon icon={faUser} />
                     </Link>
                     <ul className="dropdown-menu">
                       <li>
@@ -433,9 +453,12 @@ const Gate = () => {
         aria-hidden="true"
       >
         <div className="modal-dialog  modal-lg">
-          <div className="modal-content">
+          <div data-bs-theme="dark"  className="modal-content bg-dark">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
+              <h1
+                className="modal-title fs-5 text-light"
+                id="exampleModalLabel"
+              >
                 Ventana de compra
               </h1>
               <button
@@ -449,8 +472,18 @@ const Gate = () => {
               <div className="d-flex">
                 <div className="w-50">
                   <ul>
-                    <li className="list-group-item p-2">{dataE.Nombre}</li>
-                    <li className="list-group-item p-2">
+                    <li
+                      className={`list-group-item p-2 ${
+                        dataE.Categoria === "Accion"
+                          ? "text-danger"
+                          : dataE.Categoria === "Deportes"
+                          ? "text-success"
+                          : "text-primary"
+                      }`}
+                    >
+                      {dataE.Nombre}
+                    </li>
+                    <li className="list-group-item p-2 text-light">
                       Categoria:{" "}
                       <span
                         className={
@@ -466,43 +499,22 @@ const Gate = () => {
                         {dataE.Categoria}
                       </span>
                     </li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
                       Tamaño:
                       {` ${dataE.Tamaño} `}
                       GB
                     </li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
                       Precio: ${` ${dataE.Precio} `}
                       COP
                     </li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
                       Cant. Licencias disponibles:
                       {` ${dataE.CantLicenciasDisponibles}`}
                     </li>
-                    <li className="list-group-item p-2">
+                    <li className="list-group-item p-2 text-light">
                       Cant. Licencias vendidas:
                       {` ${dataE.CantLicenciasVendidas}`}
-                    </li>
-                    <li className="list-group-item p-2">
-                      <div className="d-flex flex-row justify-content-center">
-                        <div className="w-75 ">Cant. Licencias a comprar:</div>
-                        <div>
-                          <input
-                            type="number"
-                            className="form-control w-75"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
-                            required
-                            value={car.Cantidad}
-                            onChange={(e) =>
-                              setCarrito((prevUsuario) => ({
-                                ...prevUsuario,
-                                Cantidad: e.target.value,
-                              }))
-                            }
-                          />
-                        </div>
-                      </div>
                     </li>
                   </ul>
                 </div>

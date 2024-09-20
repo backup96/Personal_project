@@ -7,8 +7,9 @@
       "Tamaño": 12,
       "Precio": "34.400",
       "Pe": 34400,
-      "CantLicenciasDisponibles": 145,
-      "CantLicenciasVendidas": 6314531,
+      "CantLicenciasDisponibles": 141,
+      "CLDisponibles": 143,
+      "CantLicenciasVendidas": 6314535,
       "CLV": 6314500,
       "Imagen": "https://cdn.gearsofwar.com/gearsofwar/sites/9/2020/02/gears-of-war-2-5e4712bb05532-1024x1024.jpg",
       "id": "a315"
@@ -33,8 +34,8 @@
       "Tamaño": 7.5,
       "Precio": "23.000",
       "Pe": 23000,
-      "CantLicenciasDisponibles": 1200,
-      "CantLicenciasVendidas": 3000000,
+      "CantLicenciasDisponibles": 1181,
+      "CantLicenciasVendidas": 3000019,
       "CLV": 3000000,
       "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkadMgJo2PcLhECLlQZlehxo3dt5e3PrIIA&s",
       "id": "1f48"
@@ -46,8 +47,8 @@
       "Tamaño": 3.9,
       "Precio": "18.000",
       "Pe": 18000,
-      "CantLicenciasDisponibles": null,
-      "CantLicenciasVendidas": null,
+      "CantLicenciasDisponibles": 430,
+      "CantLicenciasVendidas": 500020,
       "CLV": 1500000,
       "Imagen": "https://image.api.playstation.com/cdn/UP1004/CUSA03512_00/udlJ1aHIZdPyMZZwglL0IBpHfCt80C1B.png",
       "id": "57a9"
@@ -59,8 +60,8 @@
       "Tamaño": 48,
       "Precio": "74.000",
       "Pe": 74000,
-      "CantLicenciasDisponibles": 343,
-      "CantLicenciasVendidas": 20000007,
+      "CantLicenciasDisponibles": 342,
+      "CantLicenciasVendidas": 20000008,
       "CLV": 20000000,
       "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg8NMe1YE7CtPqM3WMVYdwarZhyWAfBOSZ8g&s",
       "id": "a5f3"
@@ -72,8 +73,8 @@
       "Tamaño": 4.5,
       "Precio": "15.000",
       "Pe": 15000,
-      "CantLicenciasDisponibles": 1970,
-      "CantLicenciasVendidas": 10000030,
+      "CantLicenciasDisponibles": 500000,
+      "CantLicenciasVendidas": 7000000,
       "CLV": 10000000,
       "Imagen": "https://i1.sndcdn.com/artworks-rJQzejugOwkWqAIK-i7SPKQ-t500x500.jpg",
       "id": "b8ed"
@@ -85,8 +86,8 @@
       "Tamaño": 110,
       "Precio": "80.000",
       "Pe": 80000,
-      "CantLicenciasDisponibles": 1500,
-      "CantLicenciasVendidas": 500000,
+      "CantLicenciasDisponibles": 1499,
+      "CantLicenciasVendidas": 500001,
       "CLV": 500000,
       "Imagen": "https://image.api.playstation.com/vulcan/ap/rnd/202307/2809/03f24f06573f21a2b3b5279b26205b0f882acf8a31d5dabd.png",
       "id": "08d0"
@@ -111,8 +112,8 @@
       "Tamaño": 100,
       "Precio": "85.000",
       "Pe": 85000,
-      "CantLicenciasDisponibles": 1700,
-      "CantLicenciasVendidas": "1.000.000",
+      "CantLicenciasDisponibles": 1699,
+      "CantLicenciasVendidas": 2,
       "CLV": 1000000,
       "Imagen": "https://image.api.playstation.com/vulcan/ap/rnd/202408/0817/4248a0d1a669210e5caf5174eda176c7883be2c9089fa106.png",
       "id": "a03b"
@@ -163,8 +164,8 @@
       "Tamaño": 2.4,
       "Precio": "18.000",
       "Pe": 18000,
-      "CantLicenciasDisponibles": 700,
-      "CantLicenciasVendidas": "2.000.000",
+      "CantLicenciasDisponibles": 699,
+      "CantLicenciasVendidas": 3,
       "CLV": 2000000,
       "Imagen": "https://m.media-amazon.com/images/M/MV5BMjllNzc2OTItMWJmYS00MWVlLWFmNmEtOTdhYTczMmNkMTA5XkEyXkFqcGdeQXVyMTk2OTAzNTI@._V1_.jpg",
       "id": "b7c7"
@@ -179,7 +180,7 @@
       "CantLicenciasDisponibles": 400,
       "CantLicenciasVendidas": 500,
       "CLV": 500000,
-      "Imagen": "https://play-lh.googleusercontent.com/ew5vyJJOl3pGclUECgDOkmUc7PgQZWsv19zS9Le42l2aBNuzCHUKTrSrnt4AoGP2EA",
+      "Imagen": "https://ih1.redbubble.net/image.832985842.8000/st,small,507x507-pad,600x600,f8f8f8.u3.jpg",
       "id": "a7e3"
     },
     {
@@ -208,8 +209,32 @@
       "NombreUsuario": "JoanMoreno12",
       "Correo": "joan@joan",
       "Pass": "Hola277353@"
+    },
+    {
+      "id": "9019",
+      "NombreUsuario": "Prieto123@",
+      "Correo": "prieto@gmail.com",
+      "Pass": "holasoyprieto"
+    },
+    {
+      "id": "5227",
+      "NombreUsuario": "Denys123@",
+      "Correo": "denys@gmail.com",
+      "Pass": "holasoydenys"
     }
   ],
   "Carrito": [],
-  "MisJuegos": []
+  "MisJuegos": [
+    {
+      "id": "57a9",
+      "Nombre": "Manhunt",
+      "Imagen": "https://image.api.playstation.com/cdn/UP1004/CUSA03512_00/udlJ1aHIZdPyMZZwglL0IBpHfCt80C1B.png",
+      "Categoria": "Accion",
+      "Pe": 18000,
+      "Tamaño": 3.9,
+      "idDueño": "5227",
+      "Cantidad": 1,
+      "CantLicenciasDisponibles": 430
+    }
+  ]
 }

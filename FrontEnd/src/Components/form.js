@@ -1,13 +1,37 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { usePage, useUser } from "../pageContext";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = () => {
+  const alertWarnUser = () => {
+    toast.warn("Usuario no encontrado");
+  };
+
+  const alertWarnPass = () => {
+    toast.warn("Contraseña incorrecta");
+  };
+
+  const alertError = () => {
+    toast.error("Ocurrió un error al intentar iniciar sesión");
+  };
+
   const [user, setUser] = useState([]);
-  
+
   const { setUser: setContextUser } = useUser();
   const { setPage: setContextPage } = usePage();
+
+   const [passwordVisible, setPasswordVisible] = useState(false);
+
+   const togglePasswordVisibility = () => {
+     setPasswordVisible(!passwordVisible);
+   };
 
   const enviar = async (e) => {
     e.preventDefault();
@@ -22,53 +46,33 @@ const Form = () => {
         `http://localhost:5000/Users?Pass=${user.Pass}`
       );
       if (NombreUsuario.data.length === 0) {
-        alert("Usuario no encontrado");
+        alertWarnUser()
       } else if (Password.data.length === 0) {
-        alert("Contraseña incorrecta");
+        alertWarnPass()
       } else {
-        alert("Inicio de sesión exitoso");
         setContextUser(NombreUsuario.data[0]);
         console.log(NombreUsuario.data[0]);
-        setContextPage("Gate")
+        setContextPage("Gate");
       }
     } catch (error) {
       console.error(error);
-      alert("Ocurrió un error al intentar iniciar sesión");
+      alertError()
     }
   };
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      <ToastContainer />
       {/* Barra de navegación */}
       <nav className="navbar navbar-expand-lg navbar-dark z-3  w-100 bg-dark">
-        <div className="container px-lg-5">
-          <Link className="text-warning navbar-brand" to="#">
-            GameShop
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navConetent"
-            aria-controls="navConetent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+        <div className="container px-lg-5 d-flex justify-content-center">
+          <Link
+            onClick={() => setContextPage("Gate")}
+            className="text-warning navbar-brand"
           >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navConetent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <button
-                  className="btn btn-warning"
-                  href="Acción"
-                  onClick={() => setContextPage("Gate")}
-                >
-                  Inicio
-                </button>
-              </li>
-            </ul>
-          </div>
+            GameShop
+            <FontAwesomeIcon icon={faArrowLeft} className="ms-4" />
+          </Link>
         </div>
       </nav>
       {/* formulario de inicio */}
@@ -109,19 +113,31 @@ const Form = () => {
             >
               Password
             </label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              required
-              value={user.Pass}
-              onChange={(e) =>
-                setUser((prevUsuario) => ({
-                  ...prevUsuario,
-                  Pass: e.target.value,
-                }))
-              }
-            />
+            <div className="position-relative">
+              <Link
+                className="z-0 position-absolute top-50 start-100 translate-middle"
+                onClick={togglePasswordVisibility}
+              >
+                {passwordVisible ? (
+                  <FontAwesomeIcon icon={faEyeSlash} className="me-5" />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} className="me-5" />
+                )}
+              </Link>
+              <input
+                type={passwordVisible ? "text" : "password"}
+                className="form-control"
+                id="exampleInputPassword1"
+                required
+                value={user.Pass}
+                onChange={(e) =>
+                  setUser((prevUsuario) => ({
+                    ...prevUsuario,
+                    Pass: e.target.value,
+                  }))
+                }
+              />
+            </div>
           </div>
           <div className="d-flex justify-content-center">
             <button type="submit" className="btn btn-warning w-100 mt-3">
